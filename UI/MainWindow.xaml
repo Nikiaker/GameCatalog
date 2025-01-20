@@ -4,9 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Lista Produktów" Height="450" Width="800">
+        Title="Lista gier" Height="450" Width="800">
     <Grid>
-        <DataGrid ItemsSource="{Binding Games}" AutoGenerateColumns="True" 
-                  IsReadOnly="True" Margin="10" />
+        <DataGrid ItemsSource="{Binding Games}" AutoGenerateColumns="False" 
+                  IsReadOnly="True" Margin="10" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Tytuł" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Gatunek" Binding="{Binding Genre}" />
+                <DataGridTextColumn Header="Wydawca" Binding="{Binding Developer.Name}" />
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>

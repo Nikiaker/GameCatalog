@@ -14,6 +14,11 @@ namespace Mackowiak.GameCatalog.DAO.Repositories
     {
         private readonly GameCatalogDbContext _context;
 
+        public GameRepository()
+        {
+            _context = new GameCatalogDbContext();
+        }
+
         public GameRepository(GameCatalogDbContext context)
         {
             _context = context;

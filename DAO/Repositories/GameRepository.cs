@@ -10,43 +10,43 @@ using System.Threading.Tasks;
 
 namespace Mackowiak.GameCatalog.DAO.Repositories
 {
-    public class ProductRepository : IRepository<Product>
+    public class GameRepository : IRepository<Game>
     {
         private readonly GameCatalogDbContext _context;
 
-        public ProductRepository(GameCatalogDbContext context)
+        public GameRepository(GameCatalogDbContext context)
         {
             _context = context;
         }
 
-        public IEnumerable<Product> GetAll()
+        public IEnumerable<Game> GetAll()
         {
-            return _context.Products.Include(p => p.Producer).ToList();
+            return _context.Games.Include(p => p.Developer).ToList();
         }
 
-        public Product GetById(int id)
+        public Game GetById(int id)
         {
-            return _context.Products.Include(p => p.Producer).FirstOrDefault(p => p.Id == id);
+            return _context.Games.Include(p => p.Developer).FirstOrDefault(p => p.Id == id);
         }
 
-        public void Add(Product product)
+        public void Add(Game game)
         {
-            _context.Products.Add(product);
+            _context.Games.Add(game);
             _context.SaveChanges();
         }
 
-        public void Update(Product product)
+        public void Update(Game game)
         {
-            _context.Products.Update(product);
+            _context.Games.Update(game);
             _context.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            var product = _context.Products.Find(id);
-            if (product != null)
+            var game = _context.Games.Find(id);
+            if (game != null)
             {
-                _context.Products.Remove(product);
+                _context.Games.Remove(game);
                 _context.SaveChanges();
             }
         }

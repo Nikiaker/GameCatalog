@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAO.Migrations
 {
     [DbContext(typeof(GameCatalogDbContext))]
-    [Migration("20250120125407_TestMigration")]
-    partial class TestMigration
+    [Migration("20250120135306_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,7 +19,7 @@ namespace DAO.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.1");
 
-            modelBuilder.Entity("Mackowiak.GameCatalog.DAO.Models.Producer", b =>
+            modelBuilder.Entity("Mackowiak.GameCatalog.DAO.Models.Developer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,7 +31,7 @@ namespace DAO.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Producers");
+                    b.ToTable("Developers");
 
                     b.HasData(
                         new
@@ -46,10 +46,13 @@ namespace DAO.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Mackowiak.GameCatalog.DAO.Models.Product", b =>
+            modelBuilder.Entity("Mackowiak.GameCatalog.DAO.Models.Game", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("DeveloperId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Genre")
@@ -59,46 +62,43 @@ namespace DAO.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ProducerId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ProducerId");
+                    b.HasIndex("DeveloperId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Games");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
+                            DeveloperId = 1,
                             Genre = 0,
-                            Name = "The Witcher 3",
-                            ProducerId = 1
+                            Name = "The Witcher 3"
                         },
                         new
                         {
                             Id = 2,
+                            DeveloperId = 2,
                             Genre = 3,
-                            Name = "Assassin's Creed",
-                            ProducerId = 2
+                            Name = "Assassin's Creed"
                         });
                 });
 
-            modelBuilder.Entity("Mackowiak.GameCatalog.DAO.Models.Product", b =>
+            modelBuilder.Entity("Mackowiak.GameCatalog.DAO.Models.Game", b =>
                 {
-                    b.HasOne("Mackowiak.GameCatalog.DAO.Models.Producer", "Producer")
-                        .WithMany("Products")
-                        .HasForeignKey("ProducerId")
+                    b.HasOne("Mackowiak.GameCatalog.DAO.Models.Developer", "Developer")
+                        .WithMany("Games")
+                        .HasForeignKey("DeveloperId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Producer");
+                    b.Navigation("Developer");
                 });
 
-            modelBuilder.Entity("Mackowiak.GameCatalog.DAO.Models.Producer", b =>
+            modelBuilder.Entity("Mackowiak.GameCatalog.DAO.Models.Developer", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("Games");
                 });
 #pragma warning restore 612, 618
         }

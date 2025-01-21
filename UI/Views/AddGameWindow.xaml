@@ -1,0 +1,27 @@
+﻿<Window x:Class="Mackowiak.GameCatalog.UI.View.AddGameWindow"
+        x:Name="AddGameWindowName"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Dodaj Produkt" Height="300" Width="400">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Nazwa:" VerticalAlignment="Center" />
+        <TextBox Grid.Row="1" Text="{Binding Game.Name}" Margin="0,5" />
+
+        <TextBlock Grid.Row="2" Text="Gatunek:" VerticalAlignment="Center" />
+        <ComboBox Grid.Row="3" ItemsSource="{Binding Genres}" DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding Game.Genre, Mode=TwoWay}" Margin="0,5" />
+        <TextBlock Grid.Row="4" Text="Deweloper:" VerticalAlignment="Center" />
+        <ComboBox Grid.Row="5" ItemsSource="{Binding Developers}" DisplayMemberPath="Name" SelectedValuePath="Id" SelectedValue="{Binding Game.DeveloperId, Mode=TwoWay}" Margin="0,5" />
+
+        <Button Grid.Row="6" Content="Zapisz" Command="{Binding SaveGameCommand}" CommandParameter="{Binding ElementName=AddGameWindowName}" Width="100" HorizontalAlignment="Center" />
+    </Grid>
+</Window>

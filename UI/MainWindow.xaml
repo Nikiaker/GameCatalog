@@ -6,8 +6,22 @@
         mc:Ignorable="d"
         Title="Lista gier" Height="450" Width="800">
     <Grid>
-        <DataGrid ItemsSource="{Binding Games}" AutoGenerateColumns="False" 
-                  IsReadOnly="True" Margin="10" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0">
+            <Button Content="Dodaj Grę" Command="{Binding AddGameCommand}" Margin="5" />
+            <Button Content="Dodaj Dewelopera" Command="{Binding AddDeveloperCommand}" Margin="5" />
+            <TextBox Width="200" Text="{Binding Filter}" Margin="5" />
+            <Button Content="Szukaj" Command="{Binding SearchCommand}" Margin="5" />
+            <Button Content="Edytuj Grę" Command="{Binding EditGameCommand}" Margin="5" />
+            <Button Content="Usuń Grę" Command="{Binding RemoveGameCommand}" Margin="5" />
+        </StackPanel>
+
+        <DataGrid ItemsSource="{Binding FilteredGames}" AutoGenerateColumns="False" 
+                  IsReadOnly="True" SelectedItem="{Binding SelectedGame}" Margin="10" Grid.Row="1" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Tytuł" Binding="{Binding Name}" />
                 <DataGridTextColumn Header="Gatunek" Binding="{Binding Genre}" />

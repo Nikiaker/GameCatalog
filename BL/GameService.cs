@@ -25,12 +25,22 @@ namespace Mackowiak.GameCatalog.BL
             return _repository.GetAll();
         }
 
-        public void AddProduct(Game game)
+        public void AddGame(Game game)
         {
             if (string.IsNullOrEmpty(game.Name))
                 throw new ArgumentException("Nazwa produktu nie może być pusta.");
 
             _repository.Add(game);
+        }
+
+        public void UpdateGame(Game game)
+        {
+            _repository.Update(game);
+        }
+
+        public void RemoveGame(int id)
+        {
+            _repository.Delete(id);
         }
     }
 }

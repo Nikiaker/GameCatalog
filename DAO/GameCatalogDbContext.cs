@@ -1,5 +1,6 @@
 ﻿using Mackowiak.GameCatalog.Core;
 using Mackowiak.GameCatalog.DAO.Models;
+using Mackowiak.GameCatalog.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,11 @@ namespace Mackowiak.GameCatalog.DAO
             );
 
             base.OnModelCreating(modelBuilder);
+        }
+
+        public int GetNewId(IEnumerable<IModel> models)
+        {
+            return models.OrderByDescending(m => m.Id).FirstOrDefault().Id + 1;
         }
     }
 }

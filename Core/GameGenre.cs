@@ -2,6 +2,7 @@
 {
     public enum GameGenre
     {
+        Unknown,
         RPG,
         FPS,
         RTS,

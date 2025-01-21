@@ -15,6 +15,17 @@ namespace Mackowiak.GameCatalog.DAO
         public DbSet<Game> Games { get; set; }
         public DbSet<Developer> Developers { get; set; }
 
+        public GameCatalogDbContext(DbContextOptions<GameCatalogDbContext> options)
+            : base(options)
+        {
+
+        }
+
+        public GameCatalogDbContext()
+        {
+
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=GameCatalog.db");

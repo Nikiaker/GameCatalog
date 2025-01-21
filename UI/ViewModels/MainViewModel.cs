@@ -18,7 +18,7 @@ namespace Mackowiak.GameCatalog.UI.ViewModels
         private GameService gameService = new GameService();
 
         public ICommand AddGameCommand { get; set; }
-        public ICommand AddDeveloperCommand { get; set; }
+        public ICommand ManageDeveloperCommand { get; set; }
         public ICommand SearchCommand { get; set; }
         public ICommand EditGameCommand { get; set; }
         public ICommand RemoveGameCommand { get; set; }
@@ -65,7 +65,7 @@ namespace Mackowiak.GameCatalog.UI.ViewModels
         private void InitializeCommands()
         {
             AddGameCommand = new RelayCommand(AddGame);
-            AddDeveloperCommand = new RelayCommand(AddDeveloper);
+            ManageDeveloperCommand = new RelayCommand(ManageDeveloper);
             SearchCommand = new RelayCommand(Search);
             EditGameCommand = new RelayCommand(EditGame);
             RemoveGameCommand = new RelayCommand(RemoveGame);
@@ -76,14 +76,16 @@ namespace Mackowiak.GameCatalog.UI.ViewModels
             // Otwórz okno dodawania produktu
             var window = new AddGameWindow();
             window.ShowDialog();
-            LoadGames();
+            this.LoadGames();
         }
 
-        private void AddDeveloper()
+        private void ManageDeveloper()
         {
             // Dodanie nowego producenta
-            var window = new AddDeveloperWindow();
+            var window = new ManageDevelopersWindow();
             window.ShowDialog();
+            this.gameService = new GameService();
+            this.LoadGames();
         }
 
         private void Search()
@@ -98,6 +100,8 @@ namespace Mackowiak.GameCatalog.UI.ViewModels
             {
                 var window = new AddGameWindow(this.SelectedGame);
                 window.ShowDialog();
+                this.gameService = new GameService();
+                LoadGames();
             }
         }
 

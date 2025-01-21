@@ -46,7 +46,7 @@ namespace DAO.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Mackowiak.GameCatalog.DAO.Models.Game", b =>
+            modelBuilder.Entity("Mackowiak.GameCatalog.DAO.Models.Developer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -85,7 +85,7 @@ namespace DAO.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Mackowiak.GameCatalog.DAO.Models.Game", b =>
+            modelBuilder.Entity("Mackowiak.GameCatalog.DAO.Models.Developer", b =>
                 {
                     b.HasOne("Mackowiak.GameCatalog.DAO.Models.Developer", "Developer")
                         .WithMany("Games")

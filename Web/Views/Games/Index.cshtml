@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Mackowiak.GameCatalog.DAO.Models.Game>
+
+<h2>Lista produktów</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nazwa</th>
+            <th>Gatunek</th>
+            <th>Producent</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var game in Model)
+        {
+            <tr>
+                <td>@game.Name</td>
+                <td>@game.Genre</td>
+                <td>@game.Developer.Name</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@game.Id">Edytuj</a> |
+                    <a asp-action="Delete" asp-route-id="@game.Id">Usuń</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="Create" class="btn btn-primary">Dodaj Produkt</a>

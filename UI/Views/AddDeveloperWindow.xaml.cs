@@ -1,4 +1,5 @@
-﻿using Mackowiak.GameCatalog.UI.ViewModels;
+﻿using Mackowiak.GameCatalog.DAO.Models;
+using Mackowiak.GameCatalog.UI.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,12 @@ namespace Mackowiak.GameCatalog.UI.View
         {
             InitializeComponent();
             DataContext = new AddDeveloperViewModel();
+        }
+
+        public AddDeveloperWindow(Developer developer)
+        {
+            InitializeComponent();
+            DataContext = new AddDeveloperViewModel(developer);
         }
     }
 }

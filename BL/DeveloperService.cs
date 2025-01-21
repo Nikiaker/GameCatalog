@@ -37,5 +37,15 @@ namespace Mackowiak.GameCatalog.BL
 
             _repository.Add(developer);
         }
+
+        public void UpdateDeveloper(Developer developer)
+        {
+            _repository.Update(developer);
+        }
+
+        public void RemoveDeveloper(int id)
+        {
+            _repository.Delete(id);
+        }
     }
 }

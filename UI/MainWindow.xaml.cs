@@ -9,10 +9,5 @@ namespace Mackowiak.GameCatalog.UI
             InitializeComponent();
             this.DataContext = new ViewModels.MainViewModel();
         }
-
-        private void DataGrid_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-
-        }
     }
 }

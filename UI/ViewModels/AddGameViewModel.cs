@@ -49,10 +49,11 @@ namespace Mackowiak.GameCatalog.UI.ViewModels
         {
             if (!edit)
             {
-                gameService.AddGame(Game);
+                gameService.AddGame(this.Game);
             }
             else
             {
+                this.Game.Developer = null;
                 gameService.UpdateGame(Game);
             }
             window.Close();

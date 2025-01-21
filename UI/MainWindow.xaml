@@ -13,7 +13,7 @@
 
         <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0">
             <Button Content="Dodaj Grę" Command="{Binding AddGameCommand}" Margin="5" />
-            <Button Content="Dodaj Dewelopera" Command="{Binding AddDeveloperCommand}" Margin="5" />
+            <Button Content="Zarządzaj Deweloperami" Command="{Binding ManageDeveloperCommand}" Margin="5" />
             <TextBox Width="200" Text="{Binding Filter}" Margin="5" />
             <Button Content="Szukaj" Command="{Binding SearchCommand}" Margin="5" />
             <Button Content="Edytuj Grę" Command="{Binding EditGameCommand}" Margin="5" />

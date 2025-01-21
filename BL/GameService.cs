@@ -25,6 +25,11 @@ namespace Mackowiak.GameCatalog.BL
             return _repository.GetAll();
         }
 
+        public Game GetGameById(int id)
+        {
+            return _repository.GetById(id);
+        }
+
         public void AddGame(Game game)
         {
             if (string.IsNullOrEmpty(game.Name))

@@ -53,6 +53,7 @@ namespace Mackowiak.GameCatalog.UI.ViewModels
         private void LoadDevelopers()
         {
             // Pobranie produktów z bazy danych
+            this.developerService = new DeveloperService();
             var developers = developerService.GetAllDevelopers();
             this.Developers = new ObservableCollection<Developer>(developers);
             OnPropertyChanged(nameof(Developers));

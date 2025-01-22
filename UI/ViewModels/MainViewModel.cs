@@ -56,6 +56,7 @@ namespace Mackowiak.GameCatalog.UI.ViewModels
         private void LoadGames()
         {
             // Pobranie produktów z bazy danych
+            this.gameService = new GameService();
             var games = gameService.GetAllGames();
             this.Games = new ObservableCollection<Game>(games);
             OnPropertyChanged(nameof(Games));
@@ -84,7 +85,6 @@ namespace Mackowiak.GameCatalog.UI.ViewModels
             // Dodanie nowego producenta
             var window = new ManageDevelopersWindow();
             window.ShowDialog();
-            this.gameService = new GameService();
             this.LoadGames();
         }
 
@@ -100,7 +100,6 @@ namespace Mackowiak.GameCatalog.UI.ViewModels
             {
                 var window = new AddGameWindow(this.SelectedGame);
                 window.ShowDialog();
-                this.gameService = new GameService();
                 LoadGames();
             }
         }

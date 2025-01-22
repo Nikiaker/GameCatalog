@@ -3,18 +3,22 @@ using Mackowiak.GameCatalog.BL;
 using Mackowiak.GameCatalog.Core;
 using Mackowiak.GameCatalog.DAO;
 using Mackowiak.GameCatalog.DAO.Models;
+using Mackowiak.GameCatalog.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace Mackowiak.GameCatalog.Web.Controllers
 {
     public class GamesController : Controller
     {
         private readonly GameService _gameService;
+        private readonly DeveloperService _developerService;
 
         public GamesController()
         {
             _gameService = new GameService();
+            _developerService = new DeveloperService();
         }
 
         // Akcja: Wyświetlanie listy produktów
@@ -27,26 +31,45 @@ namespace Mackowiak.GameCatalog.Web.Controllers
         // Akcja: Formularz dodawania produktu
         public IActionResult Create()
         {
-            ViewBag.Genres = DictionaryProvieder.GameGenreDictionary.Select(g => new SelectListItem
+            var viewModel = new GameViewModel
             {
-                Value = g.Key.ToString(),
-                Text = g.Value
-            });
+                AvailableGenres = DictionaryProvieder.GameGenreDictionary
+                    .Select(g => new SelectListItem
+                    {
+                        Value = g.Key.ToString(),
+                        Text = g.Value
+                    }),
+                AvailableDevelopers = this._developerService.GetAllDevelopers()
+                    .Select(d => new SelectListItem
+                    {
+                        Value = d.Id.ToString(),
+                        Text = d.Name
+                    })
+            };
 
-            return View();
+            return View(viewModel);
         }
 
-        // Akcja: Obsługa zapisu nowego produktu
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Game game)
+        public IActionResult Create(GameViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _gameService.AddGame(game);
-                return RedirectToAction(nameof(Index));
+                return View(viewModel);
             }
-            return View(game);
+
+            var game = new Game
+            {
+                Id = viewModel.Id,
+                Name = viewModel.Name,
+                Genre = viewModel.Genre,
+                DeveloperId = viewModel.DeveloperId
+            };
+
+            this._gameService.AddGame(game);
+
+            return RedirectToAction(nameof(Index));
         }
 
         // Akcja: Formularz edycji produktu

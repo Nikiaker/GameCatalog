@@ -131,14 +131,5 @@ namespace Mackowiak.GameCatalog.Web.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var produkt = _gameService.GetGameById(id);
-            _gameService.RemoveGame(id);
-            return RedirectToAction(nameof(Index));
-        }
     }
 }

@@ -30,6 +30,11 @@ namespace Mackowiak.GameCatalog.BL
             return _repository.GetAll().Select(d => d.Name);
         }
 
+        public Developer GetDeveloperById(int id)
+        {
+            return _repository.GetById(id);
+        }
+
         public void AddDeveloper(Developer developer)
         {
             if (string.IsNullOrEmpty(developer.Name))

@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Mackowiak.GameCatalog.DAO.Models.Developer>
+
+<h2>Lista deweloperów</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nazwa</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var game in Model)
+        {
+            <tr>
+                <td>@game.Name</td>
+                <td>
+                    <a asp-action="Create" asp-route-id="@game.Id">Edytuj</a> |
+                    <a asp-action="Delete" asp-route-id="@game.Id">Usuń</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="Create" class="btn btn-primary">Dodaj Dewelopera</a>

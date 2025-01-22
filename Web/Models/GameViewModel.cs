@@ -8,6 +8,6 @@ namespace Mackowiak.GameCatalog.Web.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public bool Edit { get; set; } = false;
+        public bool IsEdit { get; set; } = false;
     }
 }

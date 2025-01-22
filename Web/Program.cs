@@ -6,10 +6,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Konfiguracja bazy danych SQLite
-//builder.Services.AddDbContext<GameCatalogDbContext>(options =>
-//    options.UseSqlite("Data Source=GameCatalog.db"));
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

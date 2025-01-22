@@ -1,12 +1,9 @@
 ﻿using Core.DictionaryProvider;
 using Mackowiak.GameCatalog.BL;
-using Mackowiak.GameCatalog.Core;
-using Mackowiak.GameCatalog.DAO;
 using Mackowiak.GameCatalog.DAO.Models;
 using Mackowiak.GameCatalog.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace Mackowiak.GameCatalog.Web.Controllers
 {
@@ -17,15 +14,15 @@ namespace Mackowiak.GameCatalog.Web.Controllers
 
         public GamesController()
         {
-            _gameService = new GameService();
-            _developerService = new DeveloperService();
+            this._gameService = new GameService();
+            this._developerService = new DeveloperService();
         }
 
         // Akcja: Wyświetlanie listy produktów
         public IActionResult Index()
         {
             var games = this._gameService.GetAllGames().ToList();
-            return View(games);
+            return this.View(games);
         }
 
         // Akcja: Formularz dodawania produktu
@@ -42,7 +39,7 @@ namespace Mackowiak.GameCatalog.Web.Controllers
                     Name = game.Name,
                     Genre = game.Genre,
                     DeveloperId = game.DeveloperId,
-                    Edit = true
+                    IsEdit = true
                 };
             }
             else
@@ -70,7 +67,7 @@ namespace Mackowiak.GameCatalog.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(GameViewModel viewModel)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
                 viewModel.AvailableGenres = DictionaryProvieder.GameGenreDictionary
                     .Select(g => new SelectListItem
@@ -85,10 +82,10 @@ namespace Mackowiak.GameCatalog.Web.Controllers
                         Text = d.Name
                     });
 
-                return View(viewModel);
+                return this.View(viewModel);
             }
 
-            if (!viewModel.Edit)
+            if (!viewModel.IsEdit)
             {
                 var game = new Game
                 {
@@ -110,7 +107,7 @@ namespace Mackowiak.GameCatalog.Web.Controllers
                 this._gameService.UpdateGame(game);
             }
 
-            return RedirectToAction(nameof(Index));
+            return this.RedirectToAction(nameof(this.Index));
         }
 
         // Akcja: Usuwanie produktu
@@ -118,18 +115,18 @@ namespace Mackowiak.GameCatalog.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var game = _gameService.GetGameById(id.Value);
             if (game == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             _gameService.RemoveGame(game.Id);
 
-            return RedirectToAction(nameof(Index));
+            return this.RedirectToAction(nameof(this.Index));
         }
     }
 }

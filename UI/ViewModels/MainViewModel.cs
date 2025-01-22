@@ -1,32 +1,21 @@
 ﻿using Mackowiak.GameCatalog.BL;
-using Mackowiak.GameCatalog.DAO;
 using Mackowiak.GameCatalog.DAO.Models;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using Mackowiak.GameCatalog.UI.View;
-using CommunityToolkit.Mvvm.ComponentModel;
 using System.ComponentModel;
 
 namespace Mackowiak.GameCatalog.UI.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+        private GameService _gameService = new GameService();
+
         public event PropertyChangedEventHandler PropertyChanged;
-
-        private GameService gameService = new GameService();
-
-        public ICommand AddGameCommand { get; set; }
-        public ICommand ManageDeveloperCommand { get; set; }
-        public ICommand SearchCommand { get; set; }
-        public ICommand EditGameCommand { get; set; }
-        public ICommand RemoveGameCommand { get; set; }
-
+        
         public string Filter { get; set; }
-
         public ObservableCollection<Game> Games { get; set; }
-
         public ObservableCollection<Game> FilteredGames
         {
             get
@@ -42,34 +31,42 @@ namespace Mackowiak.GameCatalog.UI.ViewModels
                 return Games;
             }
         }
-
         public Game SelectedGame { get; set; }
+
+        public ICommand AddGameCommand { get; set; }
+        public ICommand ManageDeveloperCommand { get; set; }
+        public ICommand SearchCommand { get; set; }
+        public ICommand EditGameCommand { get; set; }
+        public ICommand RemoveGameCommand { get; set; }
 
         public MainViewModel()
         {
-            // Pobranie produktów z bazy danych
-            LoadGames();
+            this.LoadGames();
+            this.InitializeCommands();
+        }
 
-            InitializeCommands();
+        protected void OnPropertyChanged(string name)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         private void LoadGames()
         {
             // Pobranie produktów z bazy danych
-            this.gameService = new GameService();
-            var games = gameService.GetAllGames();
+            this._gameService = new GameService();
+            var games = _gameService.GetAllGames();
             this.Games = new ObservableCollection<Game>(games);
-            OnPropertyChanged(nameof(Games));
-            OnPropertyChanged(nameof(FilteredGames));
+            this.OnPropertyChanged(nameof(this.Games));
+            this.OnPropertyChanged(nameof(this.FilteredGames));
         }
 
         private void InitializeCommands()
         {
-            AddGameCommand = new RelayCommand(AddGame);
-            ManageDeveloperCommand = new RelayCommand(ManageDeveloper);
-            SearchCommand = new RelayCommand(Search);
-            EditGameCommand = new RelayCommand(EditGame);
-            RemoveGameCommand = new RelayCommand(RemoveGame);
+            this.AddGameCommand = new RelayCommand(this.AddGame);
+            this.ManageDeveloperCommand = new RelayCommand(this.ManageDeveloper);
+            this.SearchCommand = new RelayCommand(this.Search);
+            this.EditGameCommand = new RelayCommand(this.EditGame);
+            this.RemoveGameCommand = new RelayCommand(this.RemoveGame);
         }
 
         private void AddGame()
@@ -91,7 +88,7 @@ namespace Mackowiak.GameCatalog.UI.ViewModels
         private void Search()
         {
             // Wyszukiwanie gry
-            OnPropertyChanged(nameof(FilteredGames));
+            this.OnPropertyChanged(nameof(this.FilteredGames));
         }
 
         private void EditGame()
@@ -100,7 +97,7 @@ namespace Mackowiak.GameCatalog.UI.ViewModels
             {
                 var window = new AddGameWindow(this.SelectedGame);
                 window.ShowDialog();
-                LoadGames();
+                this.LoadGames();
             }
         }
 
@@ -108,14 +105,9 @@ namespace Mackowiak.GameCatalog.UI.ViewModels
         {
             if (this.SelectedGame != null)
             {
-                gameService.RemoveGame(this.SelectedGame.Id);
-                LoadGames();
+                this._gameService.RemoveGame(this.SelectedGame.Id);
+                this.LoadGames();
             }
-        }
-
-        protected void OnPropertyChanged(string name)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

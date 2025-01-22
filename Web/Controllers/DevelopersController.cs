@@ -1,12 +1,7 @@
-﻿using Core.DictionaryProvider;
-using Mackowiak.GameCatalog.BL;
-using Mackowiak.GameCatalog.Core;
-using Mackowiak.GameCatalog.DAO;
+﻿using Mackowiak.GameCatalog.BL;
 using Mackowiak.GameCatalog.DAO.Models;
 using Mackowiak.GameCatalog.Web.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace Mackowiak.GameCatalog.Web.Controllers
 {
@@ -16,14 +11,14 @@ namespace Mackowiak.GameCatalog.Web.Controllers
 
         public DevelopersController()
         {
-            _developerService = new DeveloperService();
+            this._developerService = new DeveloperService();
         }
 
         // Akcja: Wyświetlanie listy produktów
         public IActionResult Index()
         {
             var developers = this._developerService.GetAllDevelopers().ToList();
-            return View(developers);
+            return this.View(developers);
         }
 
         // Akcja: Formularz dodawania produktu
@@ -38,7 +33,7 @@ namespace Mackowiak.GameCatalog.Web.Controllers
                 {
                     Id = developer.Id,
                     Name = developer.Name,
-                    Edit = true
+                    IsEdit = true
                 };
             }
             else
@@ -46,7 +41,7 @@ namespace Mackowiak.GameCatalog.Web.Controllers
                 viewModel = new DeveloperViewModel();
             }
 
-            return View(viewModel);
+            return this.View(viewModel);
         }
 
         [HttpPost]
@@ -55,11 +50,10 @@ namespace Mackowiak.GameCatalog.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-
-                return View(viewModel);
+                return this.View(viewModel);
             }
 
-            if (!viewModel.Edit)
+            if (!viewModel.IsEdit)
             {
                 var developer = new Developer
                 {
@@ -77,7 +71,7 @@ namespace Mackowiak.GameCatalog.Web.Controllers
                 this._developerService.UpdateDeveloper(developer);
             }
 
-            return RedirectToAction(nameof(Index));
+            return this.RedirectToAction(nameof(this.Index));
         }
 
         // Akcja: Usuwanie produktu
@@ -85,18 +79,18 @@ namespace Mackowiak.GameCatalog.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             var game = this._developerService.GetDeveloperById(id.Value);
             if (game == null)
             {
-                return NotFound();
+                return this.NotFound();
             }
 
             this._developerService.RemoveDeveloper(game.Id);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(this.Index));
         }
     }
 }

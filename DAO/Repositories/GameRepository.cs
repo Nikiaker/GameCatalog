@@ -1,12 +1,6 @@
-﻿using Mackowiak.GameCatalog.DAO;
-using Mackowiak.GameCatalog.DAO.Models;
+﻿using Mackowiak.GameCatalog.DAO.Models;
 using Mackowiak.GameCatalog.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mackowiak.GameCatalog.DAO.Repositories
 {
@@ -16,43 +10,43 @@ namespace Mackowiak.GameCatalog.DAO.Repositories
 
         public GameRepository()
         {
-            _context = new GameCatalogDbContext();
+            this._context = new GameCatalogDbContext();
         }
 
         public GameRepository(GameCatalogDbContext context)
         {
-            _context = context;
+            this._context = context;
         }
 
         public IEnumerable<Game> GetAll()
         {
-            return _context.Games.Include(p => p.Developer).ToList();
+            return this._context.Games.Include(p => p.Developer).ToList();
         }
 
         public Game GetById(int id)
         {
-            return _context.Games.Include(p => p.Developer).FirstOrDefault(p => p.Id == id);
+            return this._context.Games.Include(p => p.Developer).FirstOrDefault(p => p.Id == id);
         }
 
         public void Add(Game game)
         {
-            _context.Games.Add(game);
-            _context.SaveChanges();
+            this._context.Games.Add(game);
+            this._context.SaveChanges();
         }
 
         public void Update(Game game)
         {
-            _context.Games.Update(game);
-            _context.SaveChanges();
+            this._context.Games.Update(game);
+            this._context.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            var game = _context.Games.Find(id);
+            var game = this._context.Games.Find(id);
             if (game != null)
             {
-                _context.Games.Remove(game);
-                _context.SaveChanges();
+                this._context.Games.Remove(game);
+                this._context.SaveChanges();
             }
         }
     }

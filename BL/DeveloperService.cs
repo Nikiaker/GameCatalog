@@ -1,8 +1,6 @@
-﻿// BL: Logika biznesowa
-namespace Mackowiak.GameCatalog.BL
+﻿namespace Mackowiak.GameCatalog.BL
 {
     using Mackowiak.GameCatalog.Interfaces;
-    using Mackowiak.GameCatalog.DAO;
     using Mackowiak.GameCatalog.DAO.Models;
     using Mackowiak.GameCatalog.DAO.Repositories;
 
@@ -12,27 +10,27 @@ namespace Mackowiak.GameCatalog.BL
 
         public DeveloperService()
         {
-            _repository = new DeveloperRepository();
+            this._repository = new DeveloperRepository();
         }
 
         public DeveloperService(IRepository<Developer> repository)
         {
-            _repository = repository;
+            this._repository = repository;
         }
 
         public IEnumerable<Developer> GetAllDevelopers()
         {
-            return _repository.GetAll();
+            return this._repository.GetAll();
         }
 
         public IEnumerable<string> GetAllDeveloperNames()
         {
-            return _repository.GetAll().Select(d => d.Name);
+            return this._repository.GetAll().Select(d => d.Name);
         }
 
         public Developer GetDeveloperById(int id)
         {
-            return _repository.GetById(id);
+            return this._repository.GetById(id);
         }
 
         public void AddDeveloper(Developer developer)
@@ -40,17 +38,17 @@ namespace Mackowiak.GameCatalog.BL
             if (string.IsNullOrEmpty(developer.Name))
                 throw new ArgumentException("Nazwa produktu nie może być pusta.");
 
-            _repository.Add(developer);
+            this._repository.Add(developer);
         }
 
         public void UpdateDeveloper(Developer developer)
         {
-            _repository.Update(developer);
+            this._repository.Update(developer);
         }
 
         public void RemoveDeveloper(int id)
         {
-            _repository.Delete(id);
+            this._repository.Delete(id);
         }
     }
 }

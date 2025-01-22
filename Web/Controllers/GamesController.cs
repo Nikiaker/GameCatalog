@@ -29,23 +29,39 @@ namespace Mackowiak.GameCatalog.Web.Controllers
         }
 
         // Akcja: Formularz dodawania produktu
-        public IActionResult Create()
+        public IActionResult Create(int? id)
         {
-            var viewModel = new GameViewModel
+            GameViewModel viewModel;
+
+            if (id.HasValue)
             {
-                AvailableGenres = DictionaryProvieder.GameGenreDictionary
-                    .Select(g => new SelectListItem
-                    {
-                        Value = g.Key.ToString(),
-                        Text = g.Value
-                    }),
-                AvailableDevelopers = this._developerService.GetAllDevelopers()
-                    .Select(d => new SelectListItem
-                    {
-                        Value = d.Id.ToString(),
-                        Text = d.Name
-                    })
-            };
+                var game = this._gameService.GetGameById(id.Value);
+                viewModel = new GameViewModel
+                {
+                    Id = game.Id,
+                    Name = game.Name,
+                    Genre = game.Genre,
+                    DeveloperId = game.DeveloperId,
+                    Edit = true
+                };
+            }
+            else
+            {
+                viewModel = new GameViewModel();
+            }
+
+            viewModel.AvailableGenres = DictionaryProvieder.GameGenreDictionary
+                .Select(g => new SelectListItem
+                {
+                    Value = g.Key.ToString(),
+                    Text = g.Value
+                });
+            viewModel.AvailableDevelopers = this._developerService.GetAllDevelopers()
+                .Select(d => new SelectListItem
+                {
+                    Value = d.Id.ToString(),
+                    Text = d.Name
+                });
 
             return View(viewModel);
         }
@@ -56,55 +72,45 @@ namespace Mackowiak.GameCatalog.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
+                viewModel.AvailableGenres = DictionaryProvieder.GameGenreDictionary
+                    .Select(g => new SelectListItem
+                    {
+                        Value = g.Key.ToString(),
+                        Text = g.Value
+                    });
+                viewModel.AvailableDevelopers = this._developerService.GetAllDevelopers()
+                    .Select(d => new SelectListItem
+                    {
+                        Value = d.Id.ToString(),
+                        Text = d.Name
+                    });
+
                 return View(viewModel);
             }
 
-            var game = new Game
+            if (!viewModel.Edit)
             {
-                Id = viewModel.Id,
-                Name = viewModel.Name,
-                Genre = viewModel.Genre,
-                DeveloperId = viewModel.DeveloperId
-            };
+                var game = new Game
+                {
+                    Id = viewModel.Id,
+                    Name = viewModel.Name,
+                    Genre = viewModel.Genre,
+                    DeveloperId = viewModel.DeveloperId
+                };
 
-            this._gameService.AddGame(game);
+                this._gameService.AddGame(game);
+            }
+            else
+            {
+                var game = this._gameService.GetGameById(viewModel.Id);
+                game.Name = viewModel.Name;
+                game.Genre = viewModel.Genre;
+                game.DeveloperId = viewModel.DeveloperId;
+
+                this._gameService.UpdateGame(game);
+            }
 
             return RedirectToAction(nameof(Index));
-        }
-
-        // Akcja: Formularz edycji produktu
-        public IActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var game = _gameService.GetGameById(id.Value);
-            if (game == null)
-            {
-                return NotFound();
-            }
-
-            return View(game);
-        }
-
-        // Akcja: Obsługa zapisu edytowanego produktu
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Game game)
-        {
-            if (id != game.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                _gameService.UpdateGame(game);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(game);
         }
 
         // Akcja: Usuwanie produktu
@@ -121,9 +127,9 @@ namespace Mackowiak.GameCatalog.Web.Controllers
                 return NotFound();
             }
 
-            //_gameService.RemoveGame(game.Id);
+            _gameService.RemoveGame(game.Id);
 
-            return View(game);
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost, ActionName("Delete")]

@@ -14,6 +14,7 @@ namespace Mackowiak.GameCatalog.Web.Models
         public IEnumerable<SelectListItem> AvailableGenres { get; set; }
         [BindNever]
         public IEnumerable<SelectListItem> AvailableDevelopers { get; set; }
+        public bool Edit { get; set; } = false;
 
         public GameViewModel()
         {
